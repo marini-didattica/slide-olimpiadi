@@ -1,0 +1,72 @@
+name: Deploy pages
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 'lts/*'
+
+      - name: Setup @antfu/ni
+        run: npm i -g @antfu/ni
+
+      - name: Install dependencies
+        run: nci
+
+      - name: Build all decks
+        run: |
+          repo="${{ github.event.repository.name }}"
+          entries="$(find src -name '0-main.md' | sort)"
+          if [ -z "$entries" ]; then
+            echo "No entry points (src/**/0-main.md) found" >&2
+            exit 1
+          fi
+          for entry in $entries; do
+            deck="$(basename "$(dirname "$entry")")"
+            echo "Building $entry -> /$repo/$deck/"
+            nr build "$entry" \
+              --without-notes \
+              --base "/$repo/$deck/" \
+              --router-mode hash \
+              --out "$PWD/dist/$deck"
+
+          done
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v6
+        with:
+          enablement: true
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    needs: build
+    runs-on: ubuntu-latest
+    name: Deploy
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
