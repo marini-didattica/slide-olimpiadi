@@ -39,12 +39,28 @@ Un intero: il valore $G_N \bmod M$.
 > **Altri esempi** — `3 1000 → 3` (infatti $G_2 = 1$ e $G_3 = (1)\,(1-0) + 1 = 3$); `5 9 → 6` (infatti $G_5 = 33$ e $33 \bmod 9 = 6$).
 
 ---
+layout: default
+---
+
+# Idea · il girotolo
+
+La definizione di $G_i$ è una sommatoria; **srotoliamola** per vedere cosa contiene:
+
+$$G_i = \sum_{j=0}^{i-2}\big(G_{i-1} - G_j\big) = (i-1)\,G_{i-1} - \sum_{j=0}^{i-2} G_j$$
+
+Il termine $G_{i-1}$ compare $i-1$ volte, mentre ogni valore precedente viene sottratto una volta sola. Tutti questi valori finiscono così nel **"girotolo"** $\sum_{j=0}^{i-2} G_j$: un nastro che si allunga di un termine ad ogni passo.
+
+$$\boxed{G_0}\ \boxed{G_1}\ \cdots\ \boxed{G_{i-2}}\ \boxed{G_{i-1}}\ \boxed{G_i}$$
+
+> Nella prossima slide ridurremo il nastro a una ricorrenza a **due termini**.
+
+---
 layout: two-cols-header
 ---
 
 # Spiegazione
 
-Partiamo dalla definizione e isoliamo la somma $S = \sum_{i=0}^{n-2} G_i$:
+Dal girotolo sappiamo che $G_n = (n-1)\,G_{n-1} - S$, dove $S = \sum_{i=0}^{n-2} G_i$:
 
 ::left::
 
@@ -69,10 +85,6 @@ che, sostituito sopra, dà la ricorrenza finale a **due termini**:
 $$G_n = n\,G_{n-1} - (n-1)\,G_{n-2}$$
 
 **Complessità:** $O(N)$ tempo, $O(1)$ memoria.
-
-::bottom::
-
-> **Attenzione** — con i numeri negativi il resto di C++ non è quello matematico: `-12 % 9 == -3`, ma a noi serve `6`.
 
 ---
 layout: default
@@ -100,4 +112,4 @@ int enumera(int N, int M) {
 }
 ```
 
-> Applicando il modulo a ogni passo i valori non crescono mai, quindi non c'è rischio di overflow.
+> **Attenzione** — in C++ `-12 % 9 == -3`: la funzione `mod` riporta sempre il resto in $[0, M)$ e, applicata a ogni passo, evita l'overflow.
