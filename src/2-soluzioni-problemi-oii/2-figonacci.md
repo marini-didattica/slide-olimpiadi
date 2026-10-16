@@ -50,9 +50,37 @@ $$G_i = \sum_{j=0}^{i-2}\big(G_{i-1} - G_j\big) = (i-1)\,G_{i-1} - \sum_{j=0}^{i
 
 Il termine $G_{i-1}$ compare $i-1$ volte, mentre ogni valore precedente viene sottratto una volta sola. Tutti questi valori finiscono così nel **"girotolo"** $\sum_{j=0}^{i-2} G_j$: un nastro che si allunga di un termine ad ogni passo.
 
-$$\boxed{G_0}\ \boxed{G_1}\ \cdots\ \boxed{G_{i-2}}\ \boxed{G_{i-1}}\ \boxed{G_i}$$
+<div style="display:flex; justify-content:center;">
+  <svg viewBox="0 0 570 150" style="width:min(100%, 560px); height:auto;" role="img" aria-label="Nastro dei termini G; da G_{i-1} partono le frecce verso tutti i termini da sottrarre per calcolare G_i">
+    <defs>
+      <marker id="gir-arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0,0 L10,5 L0,10 Z" style="fill: var(--c-text-muted); stroke: none;" />
+      </marker>
+    </defs>
+    <g style="fill:none; stroke: var(--c-text-muted); stroke-width:1.5;">
+      <path d="M429,80 Q381,18 333,80" marker-end="url(#gir-arrow)" />
+      <path d="M429,80 Q333,18 237,80" marker-end="url(#gir-arrow)" />
+      <path d="M429,80 Q285,18 141,80" marker-end="url(#gir-arrow)" />
+      <path d="M429,80 Q237,18 45,80" marker-end="url(#gir-arrow)" />
+      <circle cx="429" cy="80" r="3" style="fill: var(--c-text-muted); stroke: none;" />
+    </g>
+    <g style="font-family: var(--slidev-code-font-family); font-size:20px; text-anchor:middle;">
+      <rect x="0" y="80" width="90" height="45" rx="5" style="fill: var(--c-surface); stroke: var(--c-border-strong); stroke-width:1.5;" />
+      <text x="45" y="110" style="fill: var(--c-text-strong);">G<tspan dy="5" style="font-size:12px">0</tspan></text>
+      <rect x="96" y="80" width="90" height="45" rx="5" style="fill: var(--c-surface); stroke: var(--c-border-strong); stroke-width:1.5;" />
+      <text x="141" y="110" style="fill: var(--c-text-strong);">G<tspan dy="5" style="font-size:12px">1</tspan></text>
+      <rect x="192" y="80" width="90" height="45" rx="5" style="fill: var(--c-surface); stroke: var(--c-border-strong); stroke-width:1.5;" />
+      <text x="237" y="108" style="fill: var(--c-text-muted);">⋯</text>
+      <rect x="288" y="80" width="90" height="45" rx="5" style="fill: var(--c-surface); stroke: var(--c-border-strong); stroke-width:1.5;" />
+      <text x="333" y="110" style="fill: var(--c-text-strong);">G<tspan dy="5" style="font-size:12px">i−2</tspan></text>
+      <rect x="384" y="80" width="90" height="45" rx="5" style="fill: var(--c-surface); stroke: var(--c-border-strong); stroke-width:1.5;" />
+      <text x="429" y="110" style="fill: var(--c-text-strong);">G<tspan dy="5" style="font-size:12px">i−1</tspan></text>
+      <rect x="480" y="80" width="90" height="45" rx="5" style="fill: var(--slidev-theme-primary); stroke: var(--slidev-theme-primary); stroke-width:1.5;" />
+      <text x="525" y="110" style="fill: var(--c-on-primary); font-weight:600;">G<tspan dy="5" style="font-size:12px">i</tspan></text>
+    </g>
+  </svg>
+</div>
 
-> Nella prossima slide ridurremo il nastro a una ricorrenza a **due termini**.
 
 ---
 layout: two-cols-header
