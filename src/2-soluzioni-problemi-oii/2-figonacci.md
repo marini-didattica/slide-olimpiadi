@@ -83,34 +83,38 @@ Il termine $G_{i-1}$ compare $i-1$ volte, mentre ogni valore precedente viene so
 
 
 ---
-layout: two-cols-header
+layout: default
 ---
 
-# Spiegazione
+# Spiegazione · isoliamo la somma
 
-Dal girotolo sappiamo che $G_n = (n-1)\,G_{n-1} - S$, dove $S = \sum_{i=0}^{n-2} G_i$:
+Dal girotolo sappiamo che
 
-::left::
+$$G_n = (n-1)\,G_{n-1} - S, \qquad S = \sum_{i=0}^{n-2} G_i$$
 
-$$G_n = (n-1)\,G_{n-1} - S$$
-
-Applicando la stessa relazione a $n-1$:
+Vogliamo eliminare la somma $S$. Applichiamo la stessa relazione a $n-1$:
 
 $$G_{n-1} = (n-2)\,G_{n-2} - \sum_{i=0}^{n-3} G_i$$
 
-da cui
+da cui possiamo isolare la somma fino a $n-3$:
 
 $$\sum_{i=0}^{n-3} G_i = (n-2)\,G_{n-2} - G_{n-1}$$
 
-::right::
+---
+layout: default
+---
 
-Aggiungendo $G_{n-2}$ a entrambi i membri ottengo $S$:
+# Spiegazione · la ricorrenza
 
-$$S = (n-1)\,G_{n-2} - G_{n-1}$$
+Aggiungendo $G_{n-2}$ a entrambi i membri, la somma precedente diventa $S$:
 
-che, sostituito sopra, dà la ricorrenza finale a **due termini**:
+$$S = \sum_{i=0}^{n-2} G_i = (n-1)\,G_{n-2} - G_{n-1}$$
 
-$$G_n = n\,G_{n-1} - (n-1)\,G_{n-2}$$
+Sostituendola in $G_n = (n-1)\,G_{n-1} - S$:
+
+$$G_n = (n-1)\,G_{n-1} - \big((n-1)\,G_{n-2} - G_{n-1}\big) = n\,G_{n-1} - (n-1)\,G_{n-2}$$
+
+Abbiamo così una ricorrenza a **due termini**.
 
 **Complessità:** $O(N)$ tempo, $O(1)$ memoria.
 
