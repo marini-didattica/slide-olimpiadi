@@ -42,14 +42,12 @@ Un intero: il numero di sequenze, modulo $10^9 + 7$.
 > **Altro esempio** — `8` / `2 2 2 2 2 2 2 2` dà `31`: qui la condizione è sempre soddisfatta, perché ogni somma vale $4$ ed è divisibile per $1, 2$ e $4$.
 
 ---
-layout: two-cols-header
+layout: default
 ---
 
 # Spiegazione
 
 `dp[i]` = numero di sequenze armoniche che usano le prime `i` porte e **terminano sulla porta `i`**.
-
-::left::
 
 Per arrivare a `i` posso saltare da ogni porta `i - 2^j` con $2^j \le i$, purché valga la condizione:
 
@@ -57,7 +55,11 @@ $$\left(A_i + A_{i-2^j}\right) \bmod 2^j = 0 \implies dp[i] \mathrel{+}= dp[i - 
 
 In altre parole: sommo `dp[i - 2^j]` per ogni potenza di $2$ ammessa.
 
-::right::
+---
+layout: default
+---
+
+# Spiegazione · dettagli
 
 **Caso base:** `dp[0] = 1` (una sola sequenza con la sola porta 0).
 
@@ -65,11 +67,9 @@ In altre parole: sommo `dp[i - 2^j]` per ogni potenza di $2$ ammessa.
 
 Per ogni `i` il ciclo interno esamina solo le potenze di $2$ non superiori a `i`, cioè $O(\log N)$ iterazioni. Applico il modulo a ogni somma per evitare overflow.
 
-**Complessità:** $O(N \log N)$ tempo, $O(N)$ memoria.
-
-::bottom::
-
 > Il "trucco" è calcolare `pow *= 2` a ogni passo invece di ricalcolare $2^j$ con `pow(2, j)`.
+
+> **Complessità:** $O(N \log N)$ tempo, $O(N)$ memoria.
 
 ---
 layout: default

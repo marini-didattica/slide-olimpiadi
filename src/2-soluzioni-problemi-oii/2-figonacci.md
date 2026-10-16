@@ -116,7 +116,7 @@ $$G_n = (n-1)\,G_{n-1} - \big((n-1)\,G_{n-2} - G_{n-1}\big) = n\,G_{n-1} - (n-1)
 
 Abbiamo così una ricorrenza a **due termini**.
 
-**Complessità:** $O(N)$ tempo, $O(1)$ memoria.
+> **Complessità:** $O(N)$ tempo, $O(1)$ memoria.
 
 ---
 layout: default

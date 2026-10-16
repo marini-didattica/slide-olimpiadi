@@ -43,14 +43,12 @@ Un intero: il tempo minimo per superare tutti i semafori.
 > **Altro esempio** — `2` / `4 7` dà `4`: conviene fermarsi al primo semaforo e passare al secondo.
 
 ---
-layout: two-cols-header
+layout: default
 ---
 
 # Spiegazione
 
 Uso due vettori di DP, uno per ciascuna scelta fatta all'ultimo semaforo considerato.
-
-::left::
 
 - `ts[i]` — tempo minimo per superare il semaforo $i$ **fermandosi**;
 - `tr[i]` — tempo minimo per superare il semaforo $i$ **senza fermarsi**.
@@ -61,9 +59,11 @@ $$tr[i] = ts[i-1]$$
 
 Se **non** mi fermo a $i$, l'unico modo lecito è essermi fermato a $i-1$.
 
-::right::
+---
+layout: default
+---
 
-**Applicazione all'esempio**
+# Spiegazione · applicazione all'esempio
 
 | `i`  | 0 | 1 | 2 | 3 | 4 | 5 |
 | ---- | - | - | - | - | - | - |
@@ -72,9 +72,7 @@ Se **non** mi fermo a $i$, l'unico modo lecito è essermi fermato a $i-1$.
 
 Casi base: $ts[0] = T_0$, $tr[0] = 0$. Risposta: $\min(9, 6) = 6$.
 
-::bottom::
-
-**Complessità:** $O(N)$ tempo e memoria — in realtà bastano due variabili, perché ogni stato dipende solo dal precedente.
+> **Complessità:** $O(N)$ tempo e memoria — in realtà bastano due variabili, perché ogni stato dipende solo dal precedente.
 
 ---
 layout: default

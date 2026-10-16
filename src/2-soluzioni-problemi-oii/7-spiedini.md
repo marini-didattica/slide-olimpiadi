@@ -45,31 +45,29 @@ Un intero: il massimo numero di fragole mangiabili.
 Mangiando il prefisso `1 0 2` e il suffisso `0 0 3` ottengo 3 fragole, con un dispiacere totale di $1+2+3 = 6 \le 9$.
 
 ---
-layout: two-cols-header
+layout: default
 ---
 
 # Spiegazione
 
 Poiché si mangia solo dalle estremità, la parte **non mangiata** è sempre un **intervallo contiguo** centrale. Uso due puntatori `l` e `r` che delimitano i bocconi ancora da mangiare, tenendo traccia di fragole e dispiacere **già mangiati** (prefisso `[0, l)` + suffisso `(r, N-1]`).
 
-::left::
-
 1. Mangio da **sinistra** finché il dispiacere resta $\le K$.
 2. Torno indietro fino all'ultima fragola: mangiare una verdura in più riduce le fragole possibili.
 3. Completo mangiando da **destra**, finché il dispiacere lo permette.
 4. Arretro di una fragola e riallargo da destra, aggiornando il massimo; ripeto finché `l` non esaurisce lo spiedino.
 
-::right::
+---
+layout: default
+---
 
-**Perché è lineare**
+# Spiegazione · perché è lineare
 
 Ogni puntatore si muove **solo in avanti** (o `l` indietro solo quando "restituisco" bocconi già contati). In totale ogni boccone viene attraversato un numero costante di volte.
 
-**Complessità:** $O(N)$ tempo, $O(1)$ memoria aggiuntiva.
-
-::bottom::
-
 > Non serve ricalcolare la somma da capo a ogni tentativo: aggiorno il dispiacere **incrementando** e **decrementando** i valori.
+
+> **Complessità:** $O(N)$ tempo, $O(1)$ memoria aggiuntiva.
 
 ---
 layout: default

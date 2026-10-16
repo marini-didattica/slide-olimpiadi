@@ -67,7 +67,7 @@ $$dp[i][0] = dp[i-1][0] + w[i][0], \qquad dp[i][i] = dp[i-1][i-1] + w[i][i]$$
 
 La risposta è il massimo dell'ultima riga.
 
-**Complessità:** $O(n^2)$ tempo; lo spazio può scendere a $O(n)$ tenendo una sola riga.
+> **Complessità:** $O(n^2)$ tempo; lo spazio può scendere a $O(n)$ tenendo una sola riga.
 
 ---
 layout: two-cols-header

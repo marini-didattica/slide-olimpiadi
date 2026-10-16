@@ -55,14 +55,12 @@ Un intero: il tempo minimo di arrivo a $L$.
 > **Altro esempio** — `1 0 5 10` / `5` dà `15`: con $R = 0$ non ci sono salti, quindi al semaforo in $5$ si attende.
 
 ---
-layout: two-cols-header
+layout: default
 ---
 
 # Spiegazione
 
 `dp[i][j]` = tempo minimo per raggiungere il semaforo $i$ **avendo saltato al più $j$ semafori**.
-
-::left::
 
 Per arrivare a $i$ ho due opzioni:
 
@@ -73,7 +71,11 @@ Per arrivare a $i$ ho due opzioni:
 
 $$dp[i][j] = \min(t_1, t_2) + \big(X_i - X_{i-1}\big)$$
 
-::right::
+---
+layout: default
+---
+
+# Spiegazione · attesa e casi base
 
 **L'attesa**
 
@@ -84,9 +86,7 @@ Se `dp[i-1][j] % (2T) < T` il semaforo è verde e l'attesa è `0`, altrimenti va
 `dp[0][j] = X_0` per ogni $j$ (nessun salto ancora usato).
 Risposta: `dp[N][R]` con $X_N = L$.
 
-::bottom::
-
-**Complessità:** $O(NR)$ tempo. In memoria bastano **due righe** → $O(R)$ spazio.
+> **Complessità:** $O(NR)$ tempo. In memoria bastano **due righe** → $O(R)$ spazio.
 
 ---
 layout: default

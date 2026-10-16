@@ -41,14 +41,12 @@ Un intero: il massimo credito ottenibile.
 > **Altro esempio** — `1` / `0 10 7` dà `7`: con un solo corso conviene prenderlo. Nell'esempio principale i due corsi si toccano nell'istante $5$, quindi ne scelgo uno solo.
 
 ---
-layout: two-cols-header
+layout: default
 ---
 
 # Spiegazione
 
 Ordino i corsi per **istante di fine** $a_i$ e uso `dp[i]` = massimo credito ottenibile usando i primi `i` corsi ordinati.
-
-::left::
 
 Per il corso `i` ho due opzioni:
 
@@ -57,17 +55,17 @@ Per il corso `i` ho due opzioni:
 
 $$dp[i] = \max\Big(dp[i-1],\; crediti_i + dp\big(pred(i)\big)\Big)$$
 
-::right::
+---
+layout: default
+---
 
-**Trovare `pred(i)`**
+# Spiegazione · trovare `pred(i)`
 
 Poiché i corsi sono ordinati per fine, gli istanti $a_j$ sono crescenti: una **ricerca binaria** (`lower_bound` su $da_i$) conta quanti corsi terminano strettamente prima dell'inizio di `i`.
 
-**Complessità:** $O(N \log N)$ — dominata dall'ordinamento e dalle ricerche binarie.
-
-::bottom::
-
 > È il classico problema degli **intervalli pesati**: la scelta golosa (*"prendi sempre quello che finisce prima"*) non funziona, perché un corso molto redditizio può valere più di diversi corsi corti.
+
+> **Complessità:** $O(N \log N)$ — dominata dall'ordinamento e dalle ricerche binarie.
 
 ---
 layout: default

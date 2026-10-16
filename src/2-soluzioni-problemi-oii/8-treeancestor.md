@@ -39,7 +39,7 @@ Gli $N$ antenati, nell'ordine dei nodi da $0$ a $N-1$.
 Con $K = 2$: il nodo $2$ ha come 2-antenato il nodo $0$, il nodo $6$ ha il nodo $1$, mentre il nodo $0$ (radice) risponde `-1` perché non ha antenati.
 
 ---
-layout: two-cols-header
+layout: default
 ---
 
 # Spiegazione
@@ -48,8 +48,6 @@ Esploro l'albero in profondità (DFS), tenendo due informazioni globali:
 
 - `depth` — la profondità del nodo corrente;
 - `path[d]` — il nodo visitato alla profondità `d` lungo il cammino dalla radice.
-
-::left::
 
 Quando visito un nodo a profondità `depth`, il suo antenato a distanza $K$ è semplicemente il nodo che stava $K$ livelli più in alto:
 
@@ -60,15 +58,17 @@ else
   ancestor[node] = -1;
 ```
 
-::right::
+---
+layout: default
+---
+
+# Spiegazione · la pila `path`
 
 `path` funziona come una **pila implicita**: aggiorno `path[depth] = node` scendendo e non serve "pulire" risalendo, perché i livelli vengono sovrascritti quando si esplorano altri rami.
 
-**Complessità:** $O(N)$ — una sola visita dell'albero.
-
-::bottom::
-
 > Alternativa avanzata: *binary lifting* ($O(N \log N)$ di preprocessing), ma qui **non** serve perché $K$ è fisso e noto in anticipo.
+
+> **Complessità:** $O(N)$ — una sola visita dell'albero.
 
 ---
 layout: default
