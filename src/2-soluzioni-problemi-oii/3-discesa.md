@@ -76,24 +76,15 @@ clicks: 10
 
 # Esempio · riempiamo `dp`
 
-A ogni clic si calcola una cella: a **sinistra** si evidenziano i due antenati in `w`, a **destra** si popola `dp`.
+A ogni clic si calcola una cella: a **sinistra** si evidenzia la cella di `w` in esame, a **destra** `dp` si riempie man mano.
 
 ::left::
 
 **Triangolo `w`**
 
-<div style="display:flex; flex-direction:column; gap:0.35rem; margin-top:var(--flow);">
-  <div style="width:25%; margin:0 auto;">
-    <ListTracker :items="[1]" :trackers="{ p: { 2: 0, 3: 0, 4: null } }" highlight :show-labels="false" :show-indexes="false" />
-  </div>
-  <div style="width:50%; margin:0 auto;">
-    <ListTracker :items="[2, 9]" :trackers="{ l: { 4: 0, 5: 0, 6: 1, 7: null }, r: { 4: null, 5: 1, 6: null, 7: null } }" highlight :show-labels="false" :show-indexes="false" />
-  </div>
-  <div style="width:75%; margin:0 auto;">
-    <ListTracker :items="[3, 7, 5]" :trackers="{ l: { 7: 0, 8: 0, 9: 1, 10: 2, 11: null }, r: { 7: null, 8: 1, 9: 2, 10: null, 11: null } }" highlight :show-labels="false" :show-indexes="false" />
-  </div>
-  <div style="width:100%; margin:0 auto;">
-    <ListTracker :items="[8, 4, 11, 6]" :trackers="{}" highlight :show-labels="false" :show-indexes="false" />
+<div class="ds-stack">
+  <div v-for="(row, i) in [[1], [2, 9], [3, 7, 5], [8, 4, 11, 6]]" :key="i" class="ds-row" :style="{ width: (i + 1) * 25 + '%', gridTemplateColumns: 'repeat(' + (i + 1) + ', minmax(0, 1fr))' }">
+    <div v-for="(val, j) in row" :key="j" class="ds-cell" :class="{ 'ds-cell--cur': $clicks === 1 + i * (i + 1) / 2 + j }">{{ val }}</div>
   </div>
 </div>
 
@@ -101,24 +92,42 @@ A ogni clic si calcola una cella: a **sinistra** si evidenziano i due antenati i
 
 **Triangolo `dp`**
 
-<div style="display:flex; flex-direction:column; gap:0.35rem; margin-top:var(--flow);">
-  <div style="width:25%; margin:0 auto;">
-    <ListTracker :items="[1]" :trackers="{ a: { 1: 0 } }" highlight :show-labels="false" :show-indexes="false" />
-  </div>
-  <div style="width:50%; margin:0 auto;">
-    <ListTracker :items="[3, 10]" :trackers="{ a: { 2: 0 }, b: { 3: 1 } }" highlight :show-labels="false" :show-indexes="false" />
-  </div>
-  <div style="width:75%; margin:0 auto;">
-    <ListTracker :items="[6, 17, 15]" :trackers="{ a: { 4: 0 }, b: { 5: 1 }, c: { 6: 2 } }" highlight :show-labels="false" :show-indexes="false" />
-  </div>
-  <div style="width:100%; margin:0 auto;">
-    <ListTracker :items="[14, 21, 28, 21]" :trackers="{ a: { 7: 0 }, b: { 8: 1 }, c: { 9: 2 }, d: { 10: 3 } }" highlight :show-labels="false" :show-indexes="false" />
+<div class="ds-stack">
+  <div v-for="(row, i) in [[1], [3, 10], [6, 17, 15], [14, 21, 28, 21]]" :key="i" class="ds-row" :style="{ width: (i + 1) * 25 + '%', gridTemplateColumns: 'repeat(' + (i + 1) + ', minmax(0, 1fr))' }">
+    <div
+      v-for="(val, j) in row"
+      :key="j"
+      class="ds-cell"
+      :class="{
+        'ds-cell--cur': $clicks === 1 + i * (i + 1) / 2 + j,
+        'ds-cell--above': i < 3 && ($clicks === 1 + (i + 1) * (i + 2) / 2 + j || $clicks === 2 + (i + 1) * (i + 2) / 2 + j),
+      }"
+    >{{ $clicks >= 1 + i * (i + 1) / 2 + j ? val : '/' }}</div>
   </div>
 </div>
 
 ::bottom::
 
-> Clic per avanzare: `dp` si riempie riga per riga. La risposta è il massimo dell'ultima riga (`28`).
+> Clic per avanzare: la cella corrente (in **blu**) è calcolata dalla cella di `w` in esame e dalle due celle qui **sopra** (in azzurro) già pronte. Prima di essere calcolata ogni cella mostra `/`.
+
+<style>
+.ds-stack { display: flex; flex-direction: column; gap: 0.35rem; margin-top: 1rem; }
+.ds-row { display: grid; margin: 0 auto; }
+.ds-cell {
+  padding: 0.45rem 0.5rem;
+  border: 1px solid var(--c-border-strong);
+  border-right: 0;
+  background: var(--c-surface);
+  color: var(--c-text-strong);
+  font-family: var(--slidev-code-font-family);
+  text-align: center;
+  transition: background var(--tracker-transition, 220ms) ease, color var(--tracker-transition, 220ms) ease;
+}
+.ds-row .ds-cell:first-child { border-top-left-radius: var(--c-radius); border-bottom-left-radius: var(--c-radius); }
+.ds-row .ds-cell:last-child { border-right: 1px solid var(--c-border-strong); border-top-right-radius: var(--c-radius); border-bottom-right-radius: var(--c-radius); }
+.ds-cell--above { background: var(--tracker-active-bg, rgba(122, 162, 255, 0.14)); }
+.ds-cell--cur { background: var(--slidev-theme-primary); color: var(--c-on-primary); }
+</style>
 
 ---
 layout: default
