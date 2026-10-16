@@ -1,0 +1,16 @@
+{
+	"name": "slide-seconde",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"build": "slidev build",
+		"dev": "slidev",
+		"export": "slidev export"
+	},
+	"dependencies": {
+		"@slidev/cli": "^53.0.0",
+		"vue": "^3.5.43",
+		"marini-slidev-addons": "git+https://github.com/russell-informatica/slidev-addons.git",
+		"marini-slidev-theme": "git+https://github.com/russell-informatica/slidev-theme.git"
+	}
+}
