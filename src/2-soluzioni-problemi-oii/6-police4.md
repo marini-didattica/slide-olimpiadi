@@ -1,18 +1,39 @@
----
-layout: two-cols-header
----
-
 # Police 4
 
 [ois_police4](https://training.olinfo.it/task/ois_police4) · OIS 2021/22
 
-Come *Police 3*, ma ora il veicolo può **saltare al più $R$ semafori**. I semafori si trovano alle posizioni crescenti $X_0, \ldots, X_{N-1}$ e la destinazione è $L$. Ogni semaforo ha periodo $T$: chi vi arriva con `tempo % (2T) < T` passa, altrimenti attende che diventi verde. Trovare il **tempo minimo** di arrivo.
+Come in *Police 3*, un veicolo della polizia deve percorrere una strada rettilinea su cui sono posti $N$ semafori, alle posizioni crescenti $X_0 < X_1 < \dots < X_{N-1}$. Il veicolo parte dalla posizione $0$ e deve raggiungere la destinazione $L$.
+
+La differenza rispetto a Police 3 è che ora il veicolo dispone di un **budget di salti**: può attraversare senza fermarsi **al più $R$ semafori** in tutta la traversata.
+
+Oltre ai semafori e ai loro salti, ogni spostamento lungo la strada costa tempo pari alla distanza percorsa.
+
+---
+
+# Police 4 · i semafori
+
+Ogni semaforo è caratterizzato da un **periodo** $T$: è verde per $T$ unità di tempo e rosso per le $T$ successive, in modo ciclico.
+
+Se il veicolo arriva al semaforo all'istante $t$:
+
+- se $t \bmod 2T < T$ il semaforo è **verde** e si passa subito;
+- altrimenti è **rosso** e bisogna attendere fino al prossimo verde, cioè $T - (t \bmod T)$ unità di tempo.
+
+Saltare un semaforo significa attraversarlo senza attendere, anche se rosso, consumando uno dei salti disponibili.
+
+Trovare il **tempo minimo** con cui si può arrivare a $L$.
+
+---
+layout: two-cols-header
+---
+
+# Input / Output
 
 ::left::
 
 **Input**
 
-Sulla prima riga `N R T L`; sulla successiva le posizioni $X_i$.
+Sulla prima riga `N R T L`; sulla riga successiva le posizioni $X_i$.
 
 ```text
 3 1 3 10
@@ -23,24 +44,21 @@ Sulla prima riga `N R T L`; sulla successiva le posizioni $X_i$.
 
 **Output**
 
-Il tempo minimo: `11`.
-
-**Altro esempio**
+Un intero: il tempo minimo di arrivo a $L$.
 
 ```text
-1 0 5 10     ->  15
-5
+11
 ```
 
 ::bottom::
 
-> Rispetto a Police 3 il vincolo "due di fila" sparisce: al suo posto c'è un **budget di salti** $R$.
+> **Altro esempio** — `1 0 5 10` / `5` dà `15`: con $R = 0$ non ci sono salti, quindi al semaforo in $5$ si attende.
 
 ---
 layout: two-cols-header
 ---
 
-# Idea · DP a due dimensioni
+# Spiegazione
 
 `dp[i][j]` = tempo minimo per raggiungere il semaforo $i$ **avendo saltato al più $j$ semafori**.
 
@@ -50,7 +68,7 @@ Per arrivare a $i$ ho due opzioni:
 
 - **saltare il semaforo $i-1$**, spendendo uno dei $j$ salti:
   $$t_1 = dp[i-1][j-1]$$
-- **passare dal semaforo $i-1$** (eventualmente aspettando):
+- **passare dal semaforo $i-1$** (eventualmente attendendo):
   $$t_2 = dp[i-1][j] + \text{attesa}$$
 
 $$dp[i][j] = \min(t_1, t_2) + \big(X_i - X_{i-1}\big)$$

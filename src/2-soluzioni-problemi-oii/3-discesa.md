@@ -1,18 +1,31 @@
----
-layout: two-cols-header
----
-
 # Discesa massima
 
 [discesa](https://training.olinfo.it/task/discesa)
 
-Abbiamo un triangolo di numeri con $n$ righe. Una **discesa** parte dalla cima e scende di riga in riga, spostandosi ogni volta nella cella adiacente (in basso a sinistra o in basso a destra). Trovare il **peso massimo** di una discesa.
+Abbiamo un **triangolo di numeri** con $n$ righe:
+
+```text
+      1
+     2 9
+    3 7 5
+   8 4 11 6
+```
+
+Una **discesa** parte dalla cella in cima e scende di riga in riga. Ad ogni passo, dalla cella `(i, j)` si può passare solo a una delle due celle adiacenti della riga successiva, cioè `(i+1, j)` oppure `(i+1, j+1)`.
+
+Il **peso** di una discesa è la somma dei valori che incontra. Trovare il peso massimo possibile.
+
+---
+layout: two-cols-header
+---
+
+# Input / Output
 
 ::left::
 
 **Input**
 
-Sulla prima riga $n$; nelle righe successive il triangolo.
+Sulla prima riga l'intero $n$; nelle righe successive le righe del triangolo.
 
 ```text
 4
@@ -26,19 +39,21 @@ Sulla prima riga $n$; nelle righe successive il triangolo.
 
 **Output**
 
-Il peso massimo di una discesa: `28`.
+Un intero: il peso massimo di una discesa.
 
-$$1 \to 9 \to 7 \to 11 = 28$$
+```text
+28
+```
 
 ::bottom::
 
-> **Nota bene** — è lo stesso problema della *torre di numeri*: la scelta "migliore" locale non basta, serve la DP.
+> **Altri esempi** — con un triangolo di una sola cella (`1` / `5`) la discesa vale `5`; nel triangolo qui sopra la discesa migliore è $1 \to 9 \to 7 \to 11 = 28$.
 
 ---
 layout: two-cols-header
 ---
 
-# Idea
+# Spiegazione
 
 Salvo in `dp[i][j]` il **peso massimo di una discesa che termina** nella cella `(i, j)`.
 
@@ -48,7 +63,7 @@ $$dp[i][j] = w[i][j] + \max\big(dp[i-1][j-1],\; dp[i-1][j]\big)$$
 
 ::left::
 
-I due **bordi** hanno un solo predecessore:
+I due **bordi** del triangolo hanno un solo predecessore:
 
 $$dp[i][0] = dp[i-1][0] + w[i][0]$$
 $$dp[i][i] = dp[i-1][i-1] + w[i][i]$$
@@ -59,7 +74,7 @@ La risposta è il massimo dell'ultima riga.
 
 ::right::
 
-**Esempio**
+**Applicazione all'esempio**
 
 ```text
        1                1

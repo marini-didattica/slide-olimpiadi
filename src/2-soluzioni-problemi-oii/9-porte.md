@@ -1,20 +1,26 @@
----
-layout: two-cols-header
----
-
 # Ma chi è quel mona
 
 [roiti_porte](https://training.olinfo.it/task/roiti_porte)
 
-Gaetano sbatte una sequenza di porte: parte dalla porta $0$ e deve **terminare sulla porta $N-1$**. Dalla porta $i$ può saltare alla porta $i - 2^j$ (per ogni potenza di $2$) solo se la somma delle "frequenze" è divisibile per la distanza:
+Gaetano sbatte una sequenza di porte. Parte **sbattendo la porta $0$** e deve **terminare sbattendo la porta $N-1$**.
 
-$$\big(A_i + A_{i-2^j}\big) \bmod 2^j = 0$$
+Dalla porta $i$ può passare alla porta $i - 2^j$, per ogni potenza di $2^j$ non superiore a $i$ (quindi $i-1,\ i-2,\ i-4,\ i-8,\ \dots$). Il passaggio è ammesso solo se la somma delle "frequenze" delle due porte è divisibile per la distanza $2^j$:
 
-Contare le **sequenze armoniche** distinte, modulo $10^9 + 7$.
+$$\left(A_i + A_{i-2^j}\right) \bmod 2^j = 0$$
+
+Contare il numero di **sequenze armoniche** distinte che partono dalla porta $0$ e arrivano alla porta $N-1$, modulo $10^9 + 7$.
+
+---
+layout: two-cols-header
+---
+
+# Input / Output
 
 ::left::
 
-**Input** · `N`, poi le frequenze $A_i$
+**Input**
+
+Sulla prima riga $N$; sulla riga successiva le frequenze $A_0 \ldots A_{N-1}$.
 
 ```text
 4
@@ -23,17 +29,23 @@ Contare le **sequenze armoniche** distinte, modulo $10^9 + 7$.
 
 ::right::
 
-**Output** · il numero di sequenze: `3`
+**Output**
+
+Un intero: il numero di sequenze, modulo $10^9 + 7$.
+
+```text
+3
+```
 
 ::bottom::
 
-> **Assunzione chiave del testo** — l'ultima porta *deve* essere sbattuta: la risposta è proprio `dp[N-1]`.
+> **Altro esempio** — `8` / `2 2 2 2 2 2 2 2` dà `31`: qui la condizione è sempre soddisfatta, perché ogni somma vale $4$ ed è divisibile per $1, 2$ e $4$.
 
 ---
 layout: two-cols-header
 ---
 
-# Idea
+# Spiegazione
 
 `dp[i]` = numero di sequenze armoniche che usano le prime `i` porte e **terminano sulla porta `i`**.
 
@@ -41,7 +53,7 @@ layout: two-cols-header
 
 Per arrivare a `i` posso saltare da ogni porta `i - 2^j` con $2^j \le i$, purché valga la condizione:
 
-$$\big(A_i + A_{i-2^j}\big) \bmod 2^j = 0 \implies dp[i] \mathrel{+}= dp[i - 2^j]$$
+$$\left(A_i + A_{i-2^j}\right) \bmod 2^j = 0 \implies dp[i] \mathrel{+}= dp[i - 2^j]$$
 
 In altre parole: sommo `dp[i - 2^j]` per ogni potenza di $2$ ammessa.
 

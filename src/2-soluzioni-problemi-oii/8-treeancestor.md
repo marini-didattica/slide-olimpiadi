@@ -1,18 +1,24 @@
----
-layout: two-cols-header
----
-
 # K-step ancestor
 
 [ois_treeancestor](https://training.olinfo.it/task/ois_treeancestor)
 
-Dato un albero con $N$ nodi radicato in $0$, per ogni nodo trovare il suo **antenato a distanza $K$**, cioè il nodo che si incontra risalendo $K$ archi verso la radice. Se un nodo non ha un tale antenato, stampare `-1`.
+Viene dato un albero con $N$ nodi, numerati da $0$ a $N-1$, radicato nel nodo $0$.
+
+Per ogni nodo si vuole determinare il suo **antenato a distanza $K$**: il nodo che si incontra risalendo esattamente $K$ archi verso la radice. Se un nodo è troppo vicino alla radice e un tale antenato non esiste, il risultato deve essere `-1`.
+
+---
+layout: two-cols-header
+---
+
+# Input / Output
 
 ::left::
 
 **Input**
 
-Sulla prima riga `N K` (es. `11 2`); seguono gli $N-1$ archi.
+Sulla prima riga `N K`; seguono gli $N-1$ archi, ciascuno dato da due nodi.
+
+Esempio ($N = 11$, $K = 2$):
 
 `0 3 · 1 2 · 0 4 · 0 1 · 2 6 · 4 5 · 5 7 · 2 8 · 8 9 · 8 10`
 
@@ -20,25 +26,25 @@ Sulla prima riga `N K` (es. `11 2`); seguono gli $N-1$ archi.
 
 **Output**
 
-Gli $N$ antenati, in ordine di nodo.
+Gli $N$ antenati, nell'ordine dei nodi da $0$ a $N-1$.
 
 ```text
 -1 -1 0 -1 -1 0 1 4 1 2 2
 ```
 
-(il nodo $2$ ha come 2-antenato il nodo $0$; il nodo $6$ ha il nodo $1$; ecc.)
-
 ::bottom::
 
-> Un albero ha un **cammino unico** dalla radice a ogni nodo: è proprio ciò che rende semplice questo problema.
+**Discussione dell'esempio**
+
+Con $K = 2$: il nodo $2$ ha come 2-antenato il nodo $0$, il nodo $6$ ha il nodo $1$, mentre il nodo $0$ (radice) risponde `-1` perché non ha antenati.
 
 ---
 layout: two-cols-header
 ---
 
-# Idea · DFS con il percorso
+# Spiegazione
 
-Esploro l'albero in profondità tenendo due informazioni globali:
+Esploro l'albero in profondità (DFS), tenendo due informazioni globali:
 
 - `depth` — la profondità del nodo corrente;
 - `path[d]` — il nodo visitato alla profondità `d` lungo il cammino dalla radice.

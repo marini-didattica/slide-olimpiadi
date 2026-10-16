@@ -1,23 +1,27 @@
----
-layout: two-cols-header
----
-
 # Police 3
 
 [ois_police3](https://training.olinfo.it/task/ois_police3)
 
-Un veicolo deve attraversare $N$ semafori in sequenza. Al semaforo $i$ ha due scelte:
+Un veicolo della polizia deve attraversare $N$ semafori in sequenza. Al semaforo $i$ ha due possibilità:
 
 - **fermarsi**, impiegando $T_i$ unità di tempo (l'attesa al rosso);
-- **passare** senza fermarsi, operazione che richiede tempo nullo ma è consentita **solo** se al semaforo immediatamente precedente ci si è fermati.
+- **passare** senza fermarsi, operazione che richiede tempo nullo.
 
-Trovare il tempo minimo per superare tutti i semafori.
+Passare senza fermarsi è però consentito **solo** se al semaforo immediatamente precedente il veicolo si è fermato: non è possibile "saltare" due semafori consecutivi.
+
+Trovare il **tempo minimo** per superare tutti i semafori.
+
+---
+layout: two-cols-header
+---
+
+# Input / Output
 
 ::left::
 
 **Input**
 
-Sulla prima riga $N$; sulla successiva i valori $T_0 \ldots T_{N-1}$.
+Sulla prima riga $N$; sulla riga successiva i valori $T_0 \ldots T_{N-1}$.
 
 ```text
 6
@@ -28,19 +32,23 @@ Sulla prima riga $N$; sulla successiva i valori $T_0 \ldots T_{N-1}$.
 
 **Output**
 
-Il tempo minimo: `6`.
+Un intero: il tempo minimo per superare tutti i semafori.
+
+```text
+6
+```
 
 ::bottom::
 
-> **Vincolo chiave** — non posso "saltare" due semafori consecutivi: fra due passaggi senza fermarsi dev'esserci almeno una fermata.
+> **Altro esempio** — `2` / `4 7` dà `4`: conviene fermarsi al primo semaforo e passare al secondo.
 
 ---
 layout: two-cols-header
 ---
 
-# Idea · due vettori di DP
+# Spiegazione
 
-Due stati, a seconda di cosa faccio all'ultimo semaforo considerato:
+Uso due vettori di DP, uno per ciascuna scelta fatta all'ultimo semaforo considerato.
 
 ::left::
 
@@ -55,7 +63,7 @@ Se **non** mi fermo a $i$, l'unico modo lecito è essermi fermato a $i-1$.
 
 ::right::
 
-**Traccia dell'esempio**
+**Applicazione all'esempio**
 
 | `i`  | 0 | 1 | 2 | 3 | 4 | 5 |
 | ---- | - | - | - | - | - | - |

@@ -1,38 +1,48 @@
----
-layout: two-cols-header
----
-
 # Numeri di Figonacci
 
 [ois_figonacci](https://training.olinfo.it/task/ois_figonacci) · OIS 2014/15
 
-La successione $G$ è definita da $G_0 = -1$, $G_1 = 0$ e, per ogni $n \ge 2$:
+La successione $G$ è definita dai valori iniziali $G_0 = -1$, $G_1 = 0$ e, per ogni $n \ge 2$, dalla relazione
 
 $$G_n = \sum_{i=0}^{n-2} \left(G_{n-1} - G_i\right)$$
 
-Dati $N$ e $M$, stampare $G_N \bmod M$.
-
-::left::
-
-**Input** · due interi `N M`
-
-**Output** · un intero, $G_N \bmod M$
-
-::right::
-
-**Esempio**
-
-| Input   | Output |
-| ------- | ------ |
-| `5 9`   | `6`    |
-
-> La sommatoria si "srotola" in una ricorrenza a **due termini**: bastano gli ultimi due valori.
+Dati due interi $N$ e $M$, si vuole calcolare $G_N$ modulo $M$: il risultato deve essere sempre un intero in $[0, M)$.
 
 ---
 layout: two-cols-header
 ---
 
-# Srotoliamo la sommatoria
+# Input / Output
+
+::left::
+
+**Input**
+
+Due interi `N M` separati da uno spazio.
+
+```text
+5 9
+```
+
+::right::
+
+**Output**
+
+Un intero: il valore $G_N \bmod M$.
+
+```text
+6
+```
+
+::bottom::
+
+> **Altri esempi** — `3 1000 → 3` (infatti $G_2 = 1$ e $G_3 = (1)\,(1-0) + 1 = 3$); `5 9 → 6` (infatti $G_5 = 33$ e $33 \bmod 9 = 6$).
+
+---
+layout: two-cols-header
+---
+
+# Spiegazione
 
 Partiamo dalla definizione e isoliamo la somma $S = \sum_{i=0}^{n-2} G_i$:
 
@@ -40,7 +50,7 @@ Partiamo dalla definizione e isoliamo la somma $S = \sum_{i=0}^{n-2} G_i$:
 
 $$G_n = (n-1)\,G_{n-1} - S$$
 
-Applichiamo la stessa relazione a $n-1$:
+Applicando la stessa relazione a $n-1$:
 
 $$G_{n-1} = (n-2)\,G_{n-2} - \sum_{i=0}^{n-3} G_i$$
 
@@ -54,7 +64,7 @@ Aggiungendo $G_{n-2}$ a entrambi i membri ottengo $S$:
 
 $$S = (n-1)\,G_{n-2} - G_{n-1}$$
 
-che, sostituito sopra, dà la ricorrenza finale:
+che, sostituito sopra, dà la ricorrenza finale a **due termini**:
 
 $$G_n = n\,G_{n-1} - (n-1)\,G_{n-2}$$
 
@@ -62,8 +72,10 @@ $$G_n = n\,G_{n-1} - (n-1)\,G_{n-2}$$
 
 ::bottom::
 
-> **Attenzione** — con i numeri negativi il resto di C++ non è quello matematico: `-12 % 9 == -3`, ma ci serve `6`. Aggiungere $M$ quando il resto è negativo.
+> **Attenzione** — con i numeri negativi il resto di C++ non è quello matematico: `-12 % 9 == -3`, ma a noi serve `6`.
 
+---
+layout: default
 ---
 
 # Codice

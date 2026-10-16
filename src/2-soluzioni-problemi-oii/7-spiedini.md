@@ -1,18 +1,27 @@
----
-layout: two-cols-header
----
-
 # Spiedini di frutta
 
 [oii_spiedini](https://training.olinfo.it/task/oii_spiedini) · OII 2012/13
 
-Uno spiedino è una sequenza di $N$ bocconi. Il valore `0` indica una **fragola**, un valore positivo indica una **verdura** che provoca un dispiacere pari al suo valore. Si mangia lo spiedino **dalle due estremità**: il dispiacere totale dei bocconi mangiati non può superare $K$. Massimizzare il numero di **fragole** mangiate.
+Uno spiedino è una sequenza di $N$ bocconi. Ogni boccone può essere:
+
+- una **fragola**, indicata con il valore `0`;
+- una **verdura**, indicata con un valore positivo che rappresenta il *dispiacere* provocato mangiandola.
+
+Si mangia lo spiedino partendo dalle due estremità: ad ogni morso si può togliere un boccone dall'inizio **oppure** dalla fine. Il dispiacere totale dei bocconi mangiati non può superare $K$.
+
+Si vuole massimizzare il numero di **fragole** mangiate.
+
+---
+layout: two-cols-header
+---
+
+# Input / Output
 
 ::left::
 
 **Input**
 
-Sulla prima riga `N K`; sulla successiva gli $N$ valori.
+Sulla prima riga `N K`; sulla riga successiva gli $N$ valori dello spiedino.
 
 ```text
 11 9
@@ -23,21 +32,25 @@ Sulla prima riga `N K`; sulla successiva gli $N$ valori.
 
 **Output**
 
-Il massimo numero di fragole: `3`.
+Un intero: il massimo numero di fragole mangiabili.
 
-Mangiando il prefisso `1 0 2` e il suffisso `0 0 3` ottengo 3 fragole con dispiacere $1+2+3 = 6 \le 9$.
+```text
+3
+```
 
 ::bottom::
 
-> **Osservazione** — la parte *non* mangiata è sempre un **intervallo contiguo** centrale. Aumentare da sinistra può obbligare a rinunciare a destra: si gestisce con due puntatori.
+**Discussione dell'esempio**
+
+Mangiando il prefisso `1 0 2` e il suffisso `0 0 3` ottengo 3 fragole, con un dispiacere totale di $1+2+3 = 6 \le 9$.
 
 ---
 layout: two-cols-header
 ---
 
-# Idea · due puntatori
+# Spiegazione
 
-I due puntatori `l` e `r` delimitano i bocconi **ancora da mangiare**. Tengo traccia di fragole e dispiacere **già mangiati** (prefisso `[0, l)` + suffisso `(r, N-1]`).
+Poiché si mangia solo dalle estremità, la parte **non mangiata** è sempre un **intervallo contiguo** centrale. Uso due puntatori `l` e `r` che delimitano i bocconi ancora da mangiare, tenendo traccia di fragole e dispiacere **già mangiati** (prefisso `[0, l)` + suffisso `(r, N-1]`).
 
 ::left::
 
