@@ -82,9 +82,18 @@ A ogni clic si calcola una cella: a **sinistra** si evidenzia la cella di `w` in
 
 **Triangolo `w`**
 
-<div class="ds-stack">
-  <div v-for="(row, i) in [[1], [2, 9], [3, 7, 5], [8, 4, 11, 6]]" :key="i" class="ds-row" :style="{ width: (i + 1) * 25 + '%', gridTemplateColumns: 'repeat(' + (i + 1) + ', minmax(0, 1fr))' }">
-    <div v-for="(val, j) in row" :key="j" class="ds-cell" :class="{ 'ds-cell--cur': $clicks === 1 + i * (i + 1) / 2 + j }">{{ val }}</div>
+<div style="display:flex; flex-direction:column; gap:0.35rem; margin-top:1rem;">
+  <div style="width:25%; margin:0 auto;">
+    <ListTracker :items="[1]" :trackers="{ cur: { 1: 0, 2: null } }" highlight :show-labels="false" :show-indexes="false" />
+  </div>
+  <div style="width:50%; margin:0 auto;">
+    <ListTracker :items="[2, 9]" :trackers="{ cur: { 2: 0, 3: 1, 4: null } }" highlight :show-labels="false" :show-indexes="false" />
+  </div>
+  <div style="width:75%; margin:0 auto;">
+    <ListTracker :items="[3, 7, 5]" :trackers="{ cur: { 4: 0, 5: 1, 6: 2, 7: null } }" highlight :show-labels="false" :show-indexes="false" />
+  </div>
+  <div style="width:100%; margin:0 auto;">
+    <ListTracker :items="[8, 4, 11, 6]" :trackers="{ cur: { 7: 0, 8: 1, 9: 2, 10: 3, 11: null } }" highlight :show-labels="false" :show-indexes="false" />
   </div>
 </div>
 
@@ -92,42 +101,24 @@ A ogni clic si calcola una cella: a **sinistra** si evidenzia la cella di `w` in
 
 **Triangolo `dp`**
 
-<div class="ds-stack">
-  <div v-for="(row, i) in [[1], [3, 10], [6, 17, 15], [14, 21, 28, 21]]" :key="i" class="ds-row" :style="{ width: (i + 1) * 25 + '%', gridTemplateColumns: 'repeat(' + (i + 1) + ', minmax(0, 1fr))' }">
-    <div
-      v-for="(val, j) in row"
-      :key="j"
-      class="ds-cell"
-      :class="{
-        'ds-cell--cur': $clicks === 1 + i * (i + 1) / 2 + j,
-        'ds-cell--above': i < 3 && ($clicks === 1 + (i + 1) * (i + 2) / 2 + j || $clicks === 2 + (i + 1) * (i + 2) / 2 + j),
-      }"
-    >{{ $clicks >= 1 + i * (i + 1) / 2 + j ? val : '/' }}</div>
+<div style="display:flex; flex-direction:column; gap:0.35rem; margin-top:1rem;">
+  <div style="width:25%; margin:0 auto;">
+    <ListTracker :items="['/']" :updates="{ 0: { 1: 1 } }" :trackers="{ aL: { 2: null, 3: 0, 4: null }, aR: { 2: 0, 3: null, 4: null } }" highlight :show-labels="false" :show-indexes="false" />
+  </div>
+  <div style="width:50%; margin:0 auto;">
+    <ListTracker :items="['/', '/']" :updates="{ 0: { 2: 3 }, 1: { 3: 10 } }" :trackers="{ aL: { 4: null, 5: 0, 6: 1, 7: null }, aR: { 4: 0, 5: 1, 6: null, 7: null } }" highlight :show-labels="false" :show-indexes="false" />
+  </div>
+  <div style="width:75%; margin:0 auto;">
+    <ListTracker :items="['/', '/', '/']" :updates="{ 0: { 4: 6 }, 1: { 5: 17 }, 2: { 6: 15 } }" :trackers="{ aL: { 7: null, 8: 0, 9: 1, 10: 2, 11: null }, aR: { 7: 0, 8: 1, 9: 2, 10: null, 11: null } }" highlight :show-labels="false" :show-indexes="false" />
+  </div>
+  <div style="width:100%; margin:0 auto;">
+    <ListTracker :items="['/', '/', '/', '/']" :updates="{ 0: { 7: 14 }, 1: { 8: 21 }, 2: { 9: 28 }, 3: { 10: 21 } }" :trackers="{}" highlight :show-labels="false" :show-indexes="false" />
   </div>
 </div>
 
 ::bottom::
 
-> Clic per avanzare: la cella corrente (in **blu**) è calcolata dalla cella di `w` in esame e dalle due celle qui **sopra** (in azzurro) già pronte. Prima di essere calcolata ogni cella mostra `/`.
-
-<style>
-.ds-stack { display: flex; flex-direction: column; gap: 0.35rem; margin-top: 1rem; }
-.ds-row { display: grid; margin: 0 auto; }
-.ds-cell {
-  padding: 0.45rem 0.5rem;
-  border: 1px solid var(--c-border-strong);
-  border-right: 0;
-  background: var(--c-surface);
-  color: var(--c-text-strong);
-  font-family: var(--slidev-code-font-family);
-  text-align: center;
-  transition: background var(--tracker-transition, 220ms) ease, color var(--tracker-transition, 220ms) ease;
-}
-.ds-row .ds-cell:first-child { border-top-left-radius: var(--c-radius); border-bottom-left-radius: var(--c-radius); }
-.ds-row .ds-cell:last-child { border-right: 1px solid var(--c-border-strong); border-top-right-radius: var(--c-radius); border-bottom-right-radius: var(--c-radius); }
-.ds-cell--above { background: var(--tracker-active-bg, rgba(122, 162, 255, 0.14)); }
-.ds-cell--cur { background: var(--slidev-theme-primary); color: var(--c-on-primary); }
-</style>
+> Clic per avanzare: la cella corrente di `dp` **lampeggia** mentre il suo valore (da `/` al numero) viene scritto; le due celle **sopra** da cui deriva restano evidenziate. A sinistra si evidenzia la cella di `w` in esame.
 
 ---
 layout: default
