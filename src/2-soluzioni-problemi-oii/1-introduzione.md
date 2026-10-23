@@ -28,5 +28,3 @@ Una raccolta di problemi dai siti di allenamento delle OII, tutti risolti con la
 | Spiedini di frutta | dp, due puntatori | ★★☆☆☆ |
 | K-step ancestor    | dp, grafi (DFS)   | ★★☆☆☆ |
 | Ma chi è quel mona | dp, matematica    | ★★☆☆☆ |
-
-> **Nota** — *Taglialegna* e *Truffa al sushi* sono volutamente esclusi da questa dispensa: sono problemi nettamente più avanzati.
