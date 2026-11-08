@@ -1,4 +1,4 @@
-name: Deploy pages
+name: Deploy to Cloudflare Pages
 
 on:
   workflow_dispatch:
@@ -7,15 +7,13 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages
+  group: cloudflare-pages
   cancel-in-progress: false
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,6 +23,11 @@ jobs:
         with:
           node-version: 'lts/*'
 
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+
       - name: Setup @antfu/ni
         run: npm i -g @antfu/ni
 
@@ -33,7 +36,6 @@ jobs:
 
       - name: Build all decks
         run: |
-          repo="${{ github.event.repository.name }}"
           entries="$(find src -name '0-main.md' | sort)"
           if [ -z "$entries" ]; then
             echo "No entry points (src/**/0-main.md) found" >&2
@@ -41,32 +43,18 @@ jobs:
           fi
           for entry in $entries; do
             deck="$(basename "$(dirname "$entry")")"
-            echo "Building $entry -> /$repo/$deck/"
+            echo "Building $entry -> /$deck/"
             nr build "$entry" \
               --without-notes \
-              --base "/$repo/$deck/" \
+              --base "/$deck/" \
               --router-mode hash \
               --out "$PWD/dist/$deck"
 
           done
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v6
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v3
         with:
-          enablement: true
-
-      - uses: actions/upload-pages-artifact@v5
-        with:
-          path: dist
-
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    needs: build
-    runs-on: ubuntu-latest
-    name: Deploy
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v5
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=marini-didattica-slide-olimpiadi --branch=main
