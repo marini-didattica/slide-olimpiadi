@@ -1,11 +1,11 @@
-# Welcome to [Slidev](https://github.com/slidevjs/slidev)!
+# Moved
 
-To start the slide show:
+The decks in this repository were merged into
+[marini-didattica/slide-seconde](https://github.com/marini-didattica/slide-seconde).
 
-- `npm install`
-- `npm run dev`
-- visit <http://localhost:3030>
+They now live under `src/<track>/<deck>/` in that repository and are deployed
+as one Cloudflare Pages project:
 
-Edit the [slides.md](./slides.md) to see the changes.
+<https://marini-didattica-slides.pages.dev/>
 
-Learn more about Slidev at the [documentation](https://sli.dev/).
+This repository is kept for history only and no longer deploys.
