@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Slide spostate — Marini didattica</title>
+    <link rel="canonical" href="https://slides.didattica.mattia-marini.com/olimpiadi/" />
+    <script>
+      (() => {
+        // Legacy GitHub Pages project site for the Olimpiadi decks. The decks
+        // are served by the consolidated slides site under /olimpiadi/.
+        const BASE_PATHS = ["/slide-olimpiadi"];
+        const TRACK = "/olimpiadi";
+        const DESTINATION = "https://slides.didattica.mattia-marini.com";
+        const base = BASE_PATHS.find(
+          (prefix) =>
+            location.pathname === prefix ||
+            location.pathname.startsWith(prefix + "/"),
+        );
+        const rest = (
+          base ? location.pathname.slice(base.length) || "/" : "/"
+        ).replace(/\/index\.html$/, "/");
+        location.replace(
+          DESTINATION + TRACK + encodeURI(rest) + location.search + location.hash,
+        );
+      })();
+    </script>
+  </head>
+  <body>
+    <p>
+      Le slide si sono spostate su
+      <a href="https://slides.didattica.mattia-marini.com/olimpiadi/"
+        >slides.didattica.mattia-marini.com/olimpiadi/</a
+      >.
+    </p>
+  </body>
+</html>

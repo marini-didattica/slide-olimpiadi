@@ -1,0 +1,50 @@
+name: Redirect legacy GitHub Pages site
+
+# GitHub Pages is the only host that can serve marini-didattica.github.io, so
+# this deployment is kept on purpose: it does nothing but forward the old deck
+# URLs to the consolidated slides site on Cloudflare Pages. Cloudflare cannot
+# serve a *.github.io hostname, so this job cannot be folded into the Cloudflare
+# deploy. The deck sources stay in this repository as an archive.
+
+on:
+  push:
+    branches: [main]
+    # The artifact only changes with the redirect pages themselves, so skip
+    # the deploy on content-only pushes.
+    paths:
+      - "redirect/**"
+      - ".github/workflows/redirect-pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v6
+        with:
+          enablement: true
+
+      - name: Upload redirect
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: redirect
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
